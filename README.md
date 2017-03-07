@@ -1,5 +1,5 @@
 # zeotrope
-Simple Animation object with chainable functions
+Simple Animation ES6 class with chainable functions
 
 ```js
 var anim = new Animation()
