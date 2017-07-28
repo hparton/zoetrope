@@ -1,27 +1,27 @@
-# 🐎 Zeotrope [![npm version](https://badge.fury.io/js/zeotrope.svg)](https://badge.fury.io/js/zeotrope)
+# 🐎 Zeotrope [![npm version](https://badge.fury.io/js/zoetrope.svg)](https://badge.fury.io/js/zoetrope)[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#)
 
-Zeotrope is a lightweight animation helper, designed to make creating JS animations a bit easier.
+Zeotrope is a lightweight animation helper, designed to make creating JS animations a bit easier. It doesn't do any animations out of the box, just removes the cruft when defining your own.
 
-It doesn't do any animations out of the box, just removes the cruft when defining your own.
+Should work in most browsers and will fallback to setTimeout() if RAF isn't available.
 
 ## Installation
 
 ### Using npm
 
 ```sh
-$ npm install zeotrope --save
+$ npm install zoetrope --save
 ```
 
 ### Using Yarn
 
 ```sh
-$ yarn add zeotrope
+$ yarn add zoetrope
 ```
 
 ## Usage
 
 ```js
-import Zeotrope from 'zeotrope';
+import Zeotrope from 'zoetrope';
 
 // Define a new animation, can set duration, easing, onTick and onComplete here
 let anim = new Zeotrope({

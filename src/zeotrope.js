@@ -27,6 +27,8 @@ class Zeotrope {
     if (options && options.onTick) {
       this.on('tick', options.onTick)
     }
+
+    this._attemptToPolyfill()
   }
 
   /**
@@ -211,6 +213,36 @@ class Zeotrope {
     console.log(Object.assign({}, this))
     return this
   }
+
+  /**
+   * Reformatted from: https://github.com/darius/requestAnimationFrame/blob/master/requestAnimationFrame.js
+   * Fixes from Paul Irish, Tino Zijdel, Andrew Mao, Klemen Slavič, Darius Bacon
+   *
+   * If the browser doesn't support RAF, we will polyfill in a version
+   * using setTimeout() instead.
+   */
+  _attemptToPolyfill () {
+    if (!Date.now) { Date.now = function () { return new Date().getTime() } }
+
+    var vendors = ['webkit', 'moz']
+    for (var i = 0; i < vendors.length && !window.requestAnimationFrame; ++i) {
+      var vp = vendors[i]
+      window.requestAnimationFrame = window[vp + 'RequestAnimationFrame']
+      window.cancelAnimationFrame = (window[vp + 'CancelAnimationFrame'] ||
+                                    window[vp + 'CancelRequestAnimationFrame'])
+    }
+    if (/iP(ad|hone|od).*OS 6/.test(window.navigator.userAgent) || // iOS6 is buggy
+        !window.requestAnimationFrame || !window.cancelAnimationFrame) {
+      var lastTime = 0
+      window.requestAnimationFrame = function (callback) {
+        var now = Date.now()
+        var nextTime = Math.max(lastTime + 16, now)
+        return setTimeout(function () { callback(lastTime = nextTime) },
+          nextTime - now)
+      }
+      window.cancelAnimationFrame = clearTimeout
+    }
+  }
 }
 
 /**
@@ -218,6 +250,6 @@ class Zeotrope {
    * @param  {Number} t - current time
    * @return {Number} Eased time
    */
-const easeOutQuart = (t) => { return 1-(--t)*t*t*t }
+const easeOutQuart = (t) => { return 1 - (--t) * t * t * t }
 
 export default Zeotrope
