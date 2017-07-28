@@ -13,7 +13,7 @@
   "scripts": {
     "build": "babel src --out-dir dist",
     "minify": "uglifyjs --compress --output dist/zoetrope.min.js -- dist/zoetrope.js",
-    "test": "mocha -r jsdom-global/register --compilers js:babel-register test/test.js",
+    "test": "npm run build && mocha -r jsdom-global/register --compilers js:babel-register test/test.js",
     "deploy": "npm run build && npm run test && npm run minify",
     "prepublishOnly": "npm run deploy",
     "lint": "eslint \"src/**/*.js\"",
