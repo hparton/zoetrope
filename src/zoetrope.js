@@ -112,7 +112,11 @@ class Zoetrope {
    * @param  {Number} delay Duration of the delay in ms
    * @return {Object} The current instance of Zoetrope, so methods can be chained.
    */
-  bounce (delay) {
+  loop (delay) {
+    if (!delay) {
+      delay = 0
+    }
+
     let i = 0
     this.play()
     this.on('complete', () => {
@@ -223,8 +227,8 @@ class Zoetrope {
    * Log a shallow copy of the current state
    * @return {Object} The current instance of Zoetrope, so methods can be chained.
    */
-  debug () {
-    console.log(Object.assign({}, this))
+  debug (log) {
+    if (typeof log === 'undefined' || log) console.log(Object.assign({}, this))
     return this
   }
 

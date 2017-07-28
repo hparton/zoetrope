@@ -91,12 +91,12 @@ Stop the animation, cannot be resumed as it destroys the current instance of RAF
 anim.stop()
 ```
 
-#### bounce(delay)
+#### loop(delay)
 Loop the animation forwards then backwards with an optional delay inbetween.
 
 ```js
 // Play the animation forwards, wait 200ms then play it backwards and repeat forever.
-anim.bounce(200)
+anim.loop(200)
 ```
 
 #### duration(duration)
