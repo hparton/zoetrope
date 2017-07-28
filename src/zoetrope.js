@@ -12,7 +12,7 @@ class Zoetrope {
    * Zoetrope constructor.
    */
   constructor (options) {
-    this.duration = options && options.duration ? options.duration : 1000
+    this._duration = options && options.duration ? options.duration : 1000
     this._running = true
     this._startedAt = null
     this._pausedAt = null
@@ -38,7 +38,7 @@ class Zoetrope {
    * @return {Object}          The current instance of Zoetrope, so methods can be chained.
    */
   duration (duration) {
-    this.duration = duration
+    this._duration = duration
     return this
   }
 
@@ -148,7 +148,7 @@ class Zoetrope {
 
     // Otherwise do the normal run function.
     var runtime = timestamp - this._startedAt
-    var progress = runtime / this.duration
+    var progress = runtime / this._duration
 
     progress = Math.min(progress, 1)
 
@@ -159,7 +159,7 @@ class Zoetrope {
     progress = this._easingFunc(progress)
 
     this.dispatch('tick', progress)
-    if (runtime <= this.duration) { // if duration not met yet
+    if (runtime <= this._duration) { // if duration not met yet
       this._rafID = window.requestAnimationFrame((timestamp) => { // call requestAnimationFrame again with parameters
         this._run(timestamp, reversed)
       })

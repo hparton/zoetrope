@@ -11,10 +11,13 @@
   "description": "A lightweight animation helper, less than 1kb with no dependencies.",
   "main": "./dist/zeotrope.js",
   "scripts": {
-    "build": "babel src --presets babel-preset-es2015 --out-dir dist && npm run minify",
+    "build": "babel src --out-dir dist",
     "minify": "uglifyjs --compress --output dist/zoetrope.min.js -- dist/zoetrope.js",
-    "prepublishOnly": "npm run build",
-    "precommit": "eslint \"src/**/*.js\""
+    "test": "mocha -r jsdom-global/register --compilers js:babel-register test/test.js",
+    "deploy": "npm run build && npm run test && npm run minify",
+    "prepublishOnly": "npm run deploy",
+    "lint": "eslint \"src/**/*.js\"",
+    "precommit": "npm run test && npm run lint"
   },
   "keywords": [
     "simple",
@@ -26,6 +29,8 @@
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-preset-es2015": "^6.24.1",
+    "babel-register": "^6.24.1",
+    "chai": "^4.1.0",
     "eslint": "^4.3.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-plugin-import": "^2.7.0",
@@ -33,6 +38,9 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
     "husky": "^0.14.3",
+    "jsdom": "^11.1.0",
+    "jsdom-global": "^3.0.2",
+    "mocha": "^3.4.2",
     "uglify-js": "^3.0.26"
   }
 }
