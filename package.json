@@ -1,13 +1,13 @@
 {
   "name": "zoetrope",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "license": "ISC",
   "author": "Harry Parton <hparton@hotmail.co.uk>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/hparton/zeotrope.git"
+    "url": "https://github.com/hparton/zoetrope.git"
   },
-  "bugs": "https://github.com/hparton/zeotrope/issues",
+  "bugs": "https://github.com/hparton/zoetrope/issues",
   "description": "A lightweight animation helper, less than 1kb with no dependencies.",
   "main": "./dist/zeotrope.js",
   "scripts": {
