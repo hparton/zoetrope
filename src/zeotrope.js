@@ -60,10 +60,8 @@ class Zeotrope {
    */
   play (reversed) {
     if (this._startedAt === null) {
-      this._setStartTime(() => {
-        this.dispatch('start')
-        this._run(this._startedAt, reversed)
-      })
+      this.dispatch('start')
+      this._run(this._setStartTime(), reversed)
     }
     return this
   }
@@ -83,7 +81,7 @@ class Zeotrope {
    */
   pause () {
     this._running = false
-    this._pausedAt = Date.now()
+    this._pausedAt = this._getNow()
     return this
   }
 
@@ -94,7 +92,7 @@ class Zeotrope {
   resume () {
     if (!this._running) {
       this._running = true
-      this._startedAt = this._startedAt + (Date.now - this._pausedAt)
+      this._startedAt = this._startedAt + (this._getNow() - this._pausedAt)
     }
     return this
   }
@@ -128,8 +126,9 @@ class Zeotrope {
   }
 
   /**
-   * All of the internal loop logic
    * @private
+   *
+   * All of the internal loop logic
    * @param  {Date} timestamp    Timestamp when loop was started
    * @param  {Boolean} reversed  Run the animation in reverse
    */
@@ -195,15 +194,29 @@ class Zeotrope {
   }
 
   /**
-   * Set the date at the animation start time.
    * @private
-   * @param  {Function} cb    Call after current frame
+   *
+   * Set the timestamp at the animation start time.
+   * @return {Number} Return a copy of the timestamp
    */
   _setStartTime (cb) {
-    window.requestAnimationFrame((timestamp) => {
-      this._startedAt = timestamp
-      cb(timestamp)
-    })
+    this._startedAt = this._getNow()
+    return this._startedAt
+  }
+
+  /**
+   * @private
+   *
+   * Get the current timestamp, try performance.now() first
+   * as its more accurate, then fall back to Date.now().
+   * @return {Mixed} Timestamp for right the hell now!
+   */
+  _getNow () {
+    if (window.performance && window.performance.now) {
+      return window.performance.now()
+    }
+
+    return Date.now()
   }
 
   /**
@@ -216,6 +229,8 @@ class Zeotrope {
   }
 
   /**
+   * @private
+   *
    * If the browser doesn't support Date.now, we will polyfill it to
    * use Date().getTime(), which is less performant but better supported.
    */
@@ -224,6 +239,8 @@ class Zeotrope {
   }
 
   /**
+   * @private
+   *
    * Reformatted from: https://github.com/darius/requestAnimationFrame/blob/master/requestAnimationFrame.js
    * Fixes from Paul Irish, Tino Zijdel, Andrew Mao, Klemen Slavič, Darius Bacon
    *
@@ -241,10 +258,10 @@ class Zeotrope {
     if (/iP(ad|hone|od).*OS 6/.test(window.navigator.userAgent) || // iOS6 is buggy
         !window.requestAnimationFrame || !window.cancelAnimationFrame) {
       var lastTime = 0
-      window.requestAnimationFrame = function (callback) {
-        var now = Date.now()
+      window.requestAnimationFrame = (callback) => {
+        var now = this._getNow()
         var nextTime = Math.max(lastTime + 16, now)
-        return setTimeout(function () { callback(lastTime = nextTime) },
+        return setTimeout(() => callback(lastTime = nextTime),
           nextTime - now)
       }
       window.cancelAnimationFrame = clearTimeout
