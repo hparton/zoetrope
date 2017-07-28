@@ -94,7 +94,7 @@ class Zeotrope {
   resume () {
     if (!this._running) {
       this._running = true
-      this._startedAt = this._startedAt + (Date.now() - this._pausedAt)
+      this._startedAt = this._startedAt + (Date.now - this._pausedAt)
     }
     return this
   }

@@ -1,4 +1,4 @@
-# 🐎 Zeotrope [![npm version](https://badge.fury.io/js/zoetrope.svg)](https://badge.fury.io/js/zoetrope)[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#)
+# 🐎 Zeotrope [![npm version](https://badge.fury.io/js/zoetrope.svg)](https://badge.fury.io/js/zoetrope) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#)
 
 Zeotrope is a lightweight animation helper, designed to make creating JS animations a bit easier. It doesn't do any animations out of the box, just removes the cruft when defining your own.
 

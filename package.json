@@ -13,7 +13,8 @@
   "scripts": {
     "build": "babel src --presets babel-preset-es2015 --out-dir dist && npm run minify",
     "minify": "uglifyjs --compress --output dist/zeotrope.min.js -- dist/zeotrope.js",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "precommit": "eslint \"src/**/*.js\""
   },
   "keywords": [
     "simple",
@@ -31,6 +32,7 @@
     "eslint-plugin-node": "^5.1.1",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
+    "husky": "^0.14.3",
     "uglify-js": "^3.0.26"
   }
 }
