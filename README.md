@@ -1,6 +1,6 @@
-# 🐎 Zeotrope [![npm version](https://badge.fury.io/js/zoetrope.svg)](https://badge.fury.io/js/zoetrope) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#)
+# 🐎 Zoetrope [![npm version](https://badge.fury.io/js/zoetrope.svg)](https://badge.fury.io/js/zoetrope) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#)
 
-Zeotrope is a lightweight animation helper, designed to make creating JS animations a bit easier. It doesn't do any animations out of the box, just removes the cruft when defining your own.
+Zoetrope is a lightweight animation helper, designed to make creating JS animations a bit easier. It doesn't do any animations out of the box, just removes the cruft when defining your own.
 
 Should work in most browsers and will fallback to setTimeout() if RAF isn't available.
 
@@ -21,10 +21,10 @@ $ yarn add zoetrope
 ## Usage
 
 ```js
-import Zeotrope from 'zoetrope';
+import Zoetrope from 'zoetrope';
 
 // Define a new animation, can set duration, easing, onTick and onComplete here
-let anim = new Zeotrope({
+let anim = new Zoetrope({
   duration: 1200, // default 1000
   easing: yourEasingFunc // default easeOutQuad
   onTick: (progress) => {
@@ -38,8 +38,8 @@ let anim = new Zeotrope({
 
 anim.play();
 
-// Or you can set options later, most functions for Zeotrope are chainable
-let otherAnim = new Zeotrope();
+// Or you can set options later, most functions for Zoetrope are chainable
+let otherAnim = new Zoetrope();
 
 otherAnim.duration(1200)
           .easing(yourEasingFunc)
@@ -102,7 +102,7 @@ Set the duration of the animation in ms.
 
 ```js
 // On creation
-anim = new Zeotrope({
+anim = new Zoetrope({
   duration: 5000
 })
 
@@ -119,7 +119,7 @@ Set a function to determine easing for the animation, if this is not called the 
 let easeInCubic = t => { return t*t*t }
 
 // On creation
-anim = new Zeotrope({
+anim = new Zoetrope({
   easing: easeInCubic
 })
 
@@ -131,7 +131,7 @@ anim.easing(easeInCubic)
 Log a shallow copy of the current state
 
 ```js
-let anim = new Zeotrope({
+let anim = new Zoetrope({
   duration: 300
 })
 

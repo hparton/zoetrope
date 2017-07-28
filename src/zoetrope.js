@@ -1,5 +1,5 @@
 /**
- * Zeotrope is an animation helper, designed to make creating simple
+ * Zoetrope is an animation helper, designed to make creating simple
  * RAF animations a bit easier, in particular helps with handling
  * easing.
  *
@@ -7,9 +7,9 @@
  * @version  1.0.0
  * @created_at 28/07/2017
  */
-class Zeotrope {
+class Zoetrope {
   /**
-   * Zeotrope constructor.
+   * Zoetrope constructor.
    */
   constructor (options) {
     this.duration = options && options.duration ? options.duration : 1000
@@ -35,7 +35,7 @@ class Zeotrope {
   /**
    * Set the duration of the animation.
    * @param  {Number} duration Duration of the animation in ms
-   * @return {Object}          The current instance of Zeotrope, so methods can be chained.
+   * @return {Object}          The current instance of Zoetrope, so methods can be chained.
    */
   duration (duration) {
     this.duration = duration
@@ -46,7 +46,7 @@ class Zeotrope {
    * Set a function to determine easing for the animation, if this is not called
    * the animation will just use easeOutQuint easing.
    * @param  {Function} easingFunc Function to ease the animation
-   * @return {Object}              The current instance of Zeotrope, so methods can be chained.
+   * @return {Object}              The current instance of Zoetrope, so methods can be chained.
    */
   easing (easingFunc) {
     this._easingFunc = easingFunc
@@ -56,7 +56,7 @@ class Zeotrope {
   /**
    * Start the animation, wrapper for internal function _run().
    * @param  {Boolean} reversed Run the animation in reverse
-   * @return {Object}           The current instance of Zeotrope, so methods can be chained.
+   * @return {Object}           The current instance of Zoetrope, so methods can be chained.
    */
   play (reversed) {
     if (this._startedAt === null) {
@@ -68,7 +68,7 @@ class Zeotrope {
 
   /**
    * Wrapper for the play function to make the external API clearer.
-   * @return {Object} The current instance of Zeotrope, so methods can be chained.
+   * @return {Object} The current instance of Zoetrope, so methods can be chained.
    */
   reverse () {
     this.play(true)
@@ -77,7 +77,7 @@ class Zeotrope {
 
   /**
    * Pause the animation but keep the RAF running so it can be resumed.
-   * @return {Object} The current instance of Zeotrope, so methods can be chained.
+   * @return {Object} The current instance of Zoetrope, so methods can be chained.
    */
   pause () {
     this._running = false
@@ -87,7 +87,7 @@ class Zeotrope {
 
   /**
    * Resume the animation if it was paused, otherwise it does nothing.
-   * @return {Object} The current instance of Zeotrope, so methods can be chained.
+   * @return {Object} The current instance of Zoetrope, so methods can be chained.
    */
   resume () {
     if (!this._running) {
@@ -99,7 +99,7 @@ class Zeotrope {
 
   /**
    * Stop the animation, cannot be resumed as it destroys the current instance of RAF.
-   * @return {Object} The current instance of Zeotrope, so methods can be chained.
+   * @return {Object} The current instance of Zoetrope, so methods can be chained.
    */
   stop () {
     window.cancelAnimationFrame(this._rafID)
@@ -110,7 +110,7 @@ class Zeotrope {
   /**
    * Loop the animation forwards then backwards with an optional delay inbetween.
    * @param  {Number} delay Duration of the delay in ms
-   * @return {Object} The current instance of Zeotrope, so methods can be chained.
+   * @return {Object} The current instance of Zoetrope, so methods can be chained.
    */
   bounce (delay) {
     let i = 0
@@ -221,7 +221,7 @@ class Zeotrope {
 
   /**
    * Log a shallow copy of the current state
-   * @return {Object} The current instance of Zeotrope, so methods can be chained.
+   * @return {Object} The current instance of Zoetrope, so methods can be chained.
    */
   debug () {
     console.log(Object.assign({}, this))
@@ -276,4 +276,4 @@ class Zeotrope {
    */
 const easeOutQuart = (t) => { return 1 - (--t) * t * t * t }
 
-export default Zeotrope
+export default Zoetrope

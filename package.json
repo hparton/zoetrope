@@ -12,7 +12,7 @@
   "main": "./dist/zeotrope.js",
   "scripts": {
     "build": "babel src --presets babel-preset-es2015 --out-dir dist && npm run minify",
-    "minify": "uglifyjs --compress --output dist/zeotrope.min.js -- dist/zeotrope.js",
+    "minify": "uglifyjs --compress --output dist/zoetrope.min.js -- dist/zoetrope.js",
     "prepublishOnly": "npm run build",
     "precommit": "eslint \"src/**/*.js\""
   },
