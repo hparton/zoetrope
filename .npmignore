@@ -2,3 +2,4 @@ src/
 test/
 yarn.lock
 .eslintrc.js
+.travis.yml
