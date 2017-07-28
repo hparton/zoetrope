@@ -115,7 +115,7 @@ class Zeotrope {
   bounce (delay) {
     let i = 0
     this.play()
-    this.on('finish', () => {
+    this.on('complete', () => {
       setTimeout(() => {
         (i % 2 === 0) ? this.reverse() : this.play()
         i++
