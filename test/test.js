@@ -67,3 +67,102 @@ describe('Setup', function () {
   })
 })
 
+describe('API', function() {
+  let fallback = new Zoetrope();
+
+  it('play', function (done) {
+    let anim = new Zoetrope({
+      duration: 50,
+      onComplete: () => {
+        done()
+      }
+    });
+
+    anim.play()
+  })
+
+  it('reverse', function (done) {
+    let anim = new Zoetrope({
+      duration: 50,
+      onComplete: () => {
+        done()
+      }
+    })
+
+    anim.reverse()
+  })
+
+  it('pause', function () {
+    let anim = new Zoetrope({
+      duration: 200
+    })
+
+    expect(anim._pausedAt).to.be.null
+    expect(anim._running).to.be.true
+
+    anim.play()
+    anim.pause()
+
+    expect(anim._running).to.be.false
+    expect(anim._pausedAt).to.be.at.least(1)
+  })
+
+  it('resume', function () {
+    let anim = new Zoetrope({
+      duration: 200
+    })
+
+    anim.play()
+    anim.pause()
+    anim.resume()
+
+    expect(anim._running).to.be.true
+  })
+
+  it('stop', function () {
+    let anim = new Zoetrope({
+      duration: 200
+    })
+
+    anim.play()
+
+    expect(anim._startedAt).to.not.be.null
+
+    anim.stop()
+
+    expect(anim._startedAt).to.be.null
+  })
+
+  it('loop', function (done) {
+    let i = 0
+    let anim = new Zoetrope({
+      duration: 20
+    })
+
+    anim.on('complete', () => {
+      i++
+
+      if (i === 2) {
+        done()
+      }
+    })
+
+    anim.loop(5)
+  })
+
+  it('duration', function () {
+    // No need to retest, we know it works from 'Can setup using chainable functions'
+    fallback.duration()
+  })
+
+  it('easing', function () {
+    // No need to retest, we know it works from 'Can setup using chainable functions'
+    fallback.easing(t => { return t })
+  })
+
+  it('debug', function () {
+    // No idea how to test this one.
+    fallback.debug(false)
+  })
+})
+
