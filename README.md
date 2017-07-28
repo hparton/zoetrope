@@ -1,6 +1,6 @@
 # 🐎 Zeotrope [![npm version](https://badge.fury.io/js/zeotrope.svg)](https://badge.fury.io/js/zeotrope)
 
-Zeotrope is a lightweight animation helper, designed to make creating simple animations a bit easier.
+Zeotrope is a lightweight animation helper, designed to make creating JS animations a bit easier.
 
 It doesn't do any animations out of the box, just removes the cruft when defining your own.
 
