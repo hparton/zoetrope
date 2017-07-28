@@ -28,7 +28,8 @@ class Zeotrope {
       this.on('tick', options.onTick)
     }
 
-    this._attemptToPolyfill()
+    this._polyfillDateNow()
+    this._polyfillRAF()
   }
 
   /**
@@ -82,7 +83,7 @@ class Zeotrope {
    */
   pause () {
     this._running = false
-    this._pausedAt = new Date().getTime()
+    this._pausedAt = Date.now()
     return this
   }
 
@@ -93,7 +94,7 @@ class Zeotrope {
   resume () {
     if (!this._running) {
       this._running = true
-      this._startedAt = this._startedAt + (new Date().getTime() - this._pausedAt)
+      this._startedAt = this._startedAt + (Date.now() - this._pausedAt)
     }
     return this
   }
@@ -215,15 +216,21 @@ class Zeotrope {
   }
 
   /**
+   * If the browser doesn't support Date.now, we will polyfill it to
+   * use Date().getTime(), which is less performant but better supported.
+   */
+  _polyfillDateNow () {
+    if (!Date.now) { Date.now = function () { return new Date().getTime() } }
+  }
+
+  /**
    * Reformatted from: https://github.com/darius/requestAnimationFrame/blob/master/requestAnimationFrame.js
    * Fixes from Paul Irish, Tino Zijdel, Andrew Mao, Klemen Slavič, Darius Bacon
    *
    * If the browser doesn't support RAF, we will polyfill in a version
    * using setTimeout() instead.
    */
-  _attemptToPolyfill () {
-    if (!Date.now) { Date.now = function () { return new Date().getTime() } }
-
+  _polyfillRAF () {
     var vendors = ['webkit', 'moz']
     for (var i = 0; i < vendors.length && !window.requestAnimationFrame; ++i) {
       var vp = vendors[i]
