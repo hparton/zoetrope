@@ -34,6 +34,9 @@ describe('Setup', function () {
 
   it('Event handlers set correctly', function() {
     let anim = new Zoetrope({
+      onStart: () => {
+
+      },
       onTick: (progress) => {
         console.log(progress)
       },
@@ -42,11 +45,14 @@ describe('Setup', function () {
       }
     })
 
-    expect(anim._handlers[0].event).to.equal('complete')
+    expect(anim._handlers[0].event).to.equal('start')
     expect(anim._handlers[0].cb).to.be.a('function')
 
-    expect(anim._handlers[1].event).to.equal('tick')
+    expect(anim._handlers[1].event).to.equal('complete')
     expect(anim._handlers[1].cb).to.be.a('function')
+
+    expect(anim._handlers[2].event).to.equal('tick')
+    expect(anim._handlers[2].cb).to.be.a('function')
   })
 
   it('Can setup using chainable functions', function () {

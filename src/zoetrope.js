@@ -20,6 +20,10 @@ class Zoetrope {
     this._easingFunc = options && options.easing ? options.easing : easeOutQuart
     this._rafID = null
 
+    if (options && options.onStart) {
+      this.on('start', options.onStart)
+    }
+
     if (options && options.onComplete) {
       this.on('complete', options.onComplete)
     }
