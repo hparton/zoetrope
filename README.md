@@ -11,6 +11,11 @@
 
 Zoetrope provides a clean API for defining basic javascript animations using requestAnimationFrame. It should be very familiar if you have ever used `jQuery.animate()` progress events. But Zeotrope is dependency free, has a small file size (less than 2KB gzipped) and is much more performant.
 
+It doesn't come with any animations out of the box, it's just a tiny helper so you can say:<br>
+`Do x every frame for x seconds with x easing`
+
+If you are looking for a full animation framework i recommend [Anime.js](https://github.com/juliangarnier/anime) or [GSAP](https://greensock.com/)
+
 ## Browser Support
 If `requestAnimationFrame` isn't available, Zoetrope will polyfill rAF using setTimeout(). Using the implimentation by [Paul Irish](https://www.paulirish.com/2011/requestanimationframe-for-smart-animating/)
 
@@ -50,7 +55,7 @@ let easeInOutCubic = t => { return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 
 
 
 // Define our animation, all we need is the current progress
-let spin = function (progress) {
+let spin = progress => {
   // translation
   let percentage = progress * 300
   // rotation
@@ -71,6 +76,14 @@ let animation = new Zoetrope({
 })
 
 animation.loop(500)
+```
+
+## Setup
+
+```js
+import Zoetrope from 'zoetrope'
+
+let animation = new Zoetrope()
 ```
 
 ## API
