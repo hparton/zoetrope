@@ -53,8 +53,7 @@ let $rightCircle = document.querySelector('.circle--right')
 // Lots of nice easings can be found in this thread: https://gist.github.com/gre/1650294
 let easeInOutCubic = t => { return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1 }
 
-
-// Define our animation, all we need is the current progress
+// Define what our animation should do each tick, all we need is the current progress.
 let spin = progress => {
   // translation
   let percentage = progress * 300
@@ -66,15 +65,22 @@ let spin = progress => {
   $container.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`
 }
 
+// Define our animation.
 let animation = new Zoetrope({
   duration: 3500,
   onTick: spin,
-  onComplete: () => {
-    console.log('Spin!')
+  onStart: () => {
+    console.log('Started!')
   },
   easing: easeInOutCubic
 })
 
+// Add extra event listeners.
+animation.on('complete', () => {
+  console.log('Done!')
+})
+
+// Start the animation looping, with a 500ms delay inbetween each loop
 animation.loop(500)
 ```
 
