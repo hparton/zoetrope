@@ -37,10 +37,7 @@ import Zoetrope from 'zoetrope';
 // Define a new animation, can set duration, easing, onTick and onComplete here
 let anim = new Zoetrope({
   duration: 1200, // default 1000
-  easing: yourEasingFunc, // default easeOutQuad
-  onStart: () => {
-
-  },
+  easing: yourEasingFunc // default easeOutQuad
   onTick: (progress) => {
    // This is where your animation would live, progress is an eased value from 0 - 1
    console.log(progress)
@@ -156,9 +153,6 @@ anim.debug() // logs: {duration: 300, easing: easeOutQuart, ...}
 
 ## Events
 
-#### 'start'
-Fired on the first frame of the animation.<br>
-
 #### 'tick'
 Fired on each RAF update of the animation.<br>
 **Returns:** progress - *Eased value between 0 - 1*
@@ -168,4 +162,4 @@ Fired when the animation has finished running.<br>
 
 ## License
 
-Laravel Mix is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+Zoetrope is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
