@@ -33,8 +33,6 @@ $ yarn add zoetrope
 
 <p align="center"><img src="https://user-images.githubusercontent.com/5281898/28754266-1779cb4c-753a-11e7-9a60-379006bc4dbf.gif" alt=""></p>
 
-## Usage
-
 ```js
 import Zoetrope from 'zoetrope'
 
