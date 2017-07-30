@@ -1,4 +1,4 @@
-<p align="center"><img width="250" src="https://user-images.githubusercontent.com/5281898/28753259-ca7e3540-7529-11e7-81eb-4f418af8ddd3.png" alt="Zoetrope"></p>
+<p align="center"><img width="320" src="https://user-images.githubusercontent.com/5281898/28753259-ca7e3540-7529-11e7-81eb-4f418af8ddd3.png" alt="Zoetrope"></p>
 
 <p align="center">
   <a href="https://www.npmjs.com/package/zoetrope"><img src="https://badge.fury.io/js/zoetrope.svg" alt="npm version"></a>
