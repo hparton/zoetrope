@@ -176,6 +176,9 @@ anim.debug() // logs: {duration: 300, easing: easeOutQuart, ...}
 
 ## Events
 
+#### 'start
+Fired on the first frame of the animation
+
 #### 'tick'
 Fired on each RAF update of the animation.<br>
 **Returns:** progress - *Eased value between 0 - 1*
