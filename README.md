@@ -83,7 +83,7 @@ animation.loop(500)
 ```js
 import Zoetrope from 'zoetrope'
 
-let animation = new Zoetrope()
+let anim = new Zoetrope()
 ```
 
 ## API
