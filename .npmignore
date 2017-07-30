@@ -3,3 +3,5 @@ test/
 yarn.lock
 .eslintrc.js
 .travis.yml
+.editorconfig
+.babelrc
