@@ -284,4 +284,8 @@ class Zoetrope {
    */
 const easeOutQuart = (t) => { return 1 - (--t) * t * t * t }
 
-export default Zoetrope
+if (typeof module !== 'undefined') {
+  module.exports = Zoetrope
+} else {
+  window.Zoetrope = Zoetrope
+}
