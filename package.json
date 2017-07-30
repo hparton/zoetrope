@@ -1,6 +1,6 @@
 {
   "name": "zoetrope",
-  "version": "1.2.2",
+  "version": "1.2.4",
   "license": "ISC",
   "author": "Harry Parton <hparton@hotmail.co.uk>",
   "repository": {
@@ -9,7 +9,7 @@
   },
   "bugs": "https://github.com/hparton/zoetrope/issues",
   "description": "A lightweight animation helper, less than 1kb with no dependencies.",
-  "main": "./dist/zeotrope.js",
+  "main": "./dist/zoetrope.js",
   "scripts": {
     "build": "babel src --out-dir dist",
     "minify": "uglifyjs --compress --output dist/zoetrope.min.js -- dist/zoetrope.js",
