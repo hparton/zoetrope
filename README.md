@@ -182,7 +182,7 @@ anim.debug() // logs: {duration: 300, easing: easeOutQuart, ...}
 
 ## Events
 
-#### 'start
+#### 'start'
 Fired on the first frame of the animation
 
 #### 'tick'
