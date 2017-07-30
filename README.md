@@ -29,38 +29,46 @@ $ npm install zoetrope --save
 $ yarn add zoetrope
 ```
 
+## Example
+
+<p align="center"><img src="https://user-images.githubusercontent.com/5281898/28754266-1779cb4c-753a-11e7-9a60-379006bc4dbf.gif" alt=""></p>
+
 ## Usage
 
 ```js
-import Zoetrope from 'zoetrope';
+import Zoetrope from 'zoetrope'
 
-// Define a new animation, can set duration, easing, onTick and onComplete here
-let anim = new Zoetrope({
-  duration: 1200, // default 1000
-  easing: yourEasingFunc // default easeOutQuad
-  onTick: (progress) => {
-   // This is where your animation would live, progress is an eased value from 0 - 1
-   console.log(progress)
-  },
+// Animating DOM elements, but this could easily be a canvas animation.
+let $container = document.querySelector('.animation')
+let $leftCircle = document.querySelector('.circle--left')
+let $rightCircle = document.querySelector('.circle--right')
+
+// Lots of nice easings can be found in this thread: https://gist.github.com/gre/1650294
+let easeInOutCubic = t => { return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1 }
+
+
+// Define our animation, all we need is the current progress
+let spin = function (progress) {
+  // translation
+  let percentage = progress * 300
+  // rotation
+  let rotation = 360 * progress
+
+  $leftCircle.style.transform = `translateX(${percentage}%) rotate(${rotation}deg)`
+  $rightCircle.style.transform = `translateX(-${percentage}%) rotate(${rotation}deg)`
+  $container.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`
+}
+
+let animation = new Zoetrope({
+  duration: 3500,
+  onTick: spin,
   onComplete: () => {
-   console.log('Done!')
-  }
-});
+    console.log('Spin!')
+  },
+  easing: easeInOutCubic
+})
 
-anim.play();
-
-// Or you can set options later, most functions for Zoetrope are chainable
-let otherAnim = new Zoetrope();
-
-otherAnim.duration(1200)
-          .easing(yourEasingFunc)
-          .on('tick', progress => {
-            console.log(progress)
-          })
-          .on('complete', () => {
-            console.log('Done!')
-          })
-          .play()
+animation.loop(500)
 ```
 
 ## API
