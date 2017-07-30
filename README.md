@@ -12,8 +12,12 @@
 Zoetrope provides a clean API for defining basic javascript animations using requestAnimationFrame. It should be very familiar if you have ever used `jQuery.animate()` progress events. But Zeotrope is dependency free, has a small file size (less than 2KB gzipped) and is much more performant.
 
 ## Browser Support
+If `requestAnimationFrame` isn't available, Zoetrope will polyfill rAF using setTimeout(). Using the implimentation by [Paul Irish](https://www.paulirish.com/2011/requestanimationframe-for-smart-animating/)
 
-Should work in most browsers and will fallback to setTimeout() if RAF isn't available.
+| [<img src="https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/edge.png" alt="IE / Edge" width="16px" height="16px" />](http://godban.github.io/browsers-support-badges/)</br>IE / Edge | [<img src="https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/firefox.png" alt="Firefox" width="16px" height="16px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/chrome.png" alt="Chrome" width="16px" height="16px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/safari.png" alt="Safari" width="16px" height="16px" />](http://godban.github.io/browsers-support-badges/)</br>Safari |
+| :-------: | :-------: | :-------: | :-------: |
+| IE9+ | ✓| ✓| ✓
+
 
 ## Installation
 
