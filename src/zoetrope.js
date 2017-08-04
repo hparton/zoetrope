@@ -7,6 +7,114 @@
  * @version  1.0.0
  * @created_at 28/07/2017
  */
+
+class Timeline {
+  constructor (animations) {
+    this._animations = this.processAnimations(animations)
+    this._runtime = this.calcTotalDuration()
+    this._timeline = this.constructTimeline()
+
+    console.log(this)
+  }
+
+  processAnimations (animations) {
+    for (var i = 0; i < animations.length; i++) {
+      let animation = animations[i]
+      let previousAnimation = animations[i - 1]
+
+      animation.hasRan = false
+
+      if (typeof animation.delay === 'undefined') {
+        if (!previousAnimation) {
+          animation.delay = 0
+        } else {
+          animation.delay = previousAnimation.animation._duration + previousAnimation.delay
+        }
+      }
+
+      if (typeof animation.delay === 'string') {
+        let operator = animation.delay.slice(0, 1)
+        let time = animation.delay.slice(1, animation.delay.length)
+
+        switch (operator) {
+          case '~':
+            animation.delay = previousAnimation.delay
+            break
+          case '+':
+            animation.delay = previousAnimation.animation._duration + previousAnimation.delay + parseInt(time)
+            break
+          case '-':
+            animation.delay = previousAnimation.animation._duration + previousAnimation.delay - parseInt(time)
+            break
+          default:
+            throw new Error('Operator not defined. Use +, - or ~')
+        }
+      }
+    }
+
+    return animations
+  }
+
+  resetAnimationsState () {
+    this._animations.map(x => {
+      x.hasRan = false
+    })
+  }
+
+  calcTotalDuration () {
+    let runTimes = this._animations.map(x => { return x.animation._duration + x.delay })
+    return Math.max(...runTimes)
+  }
+
+  constructTimeline () {
+    let timeline = new Zoetrope({
+      duration: this._runtime,
+      onTick: p => this.runAnimations(p),
+      onComplete: () => {
+        this.runAnimations(1)
+        this.resetAnimationsState()
+      },
+      easing: (t) => { return t }
+    })
+
+    return timeline
+  }
+
+  runAnimations (p) {
+    for (let i = 0; i < this._animations.length; i++) {
+      let animation = this._animations[i]
+
+      if ((p >= (animation.delay / this._runtime) && !animation.hasRan)) {
+        animation.animation.play()
+        animation.hasRan = true
+      }
+    }
+  }
+
+  play () {
+    this._timeline.play()
+    return this
+  }
+
+  pause () {
+    this._timeline.pause()
+    return this
+  }
+
+  resume () {
+    this._timeline.resume()
+    return this
+  }
+
+  reverse () {
+    this._timeline.reverse()
+  }
+
+  loop () {
+    this._timeline.loop()
+  }
+}
+
 class Zoetrope {
   /**
    * Zoetrope constructor.
@@ -286,6 +394,9 @@ const easeOutQuart = (t) => { return 1 - (--t) * t * t * t }
 
 if (typeof module !== 'undefined') {
   module.exports = Zoetrope
+  module.exports.Zoetrope = Zoetrope
+  module.exports.Timeline = Timeline
 } else {
   window.Zoetrope = Zoetrope
+  window.Timeline = Timeline
 }

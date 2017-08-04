@@ -2,6 +2,8 @@
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
@@ -13,6 +15,138 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @version  1.0.0
  * @created_at 28/07/2017
  */
+
+var Timeline = function () {
+  function Timeline(animations) {
+    _classCallCheck(this, Timeline);
+
+    this._animations = this.processAnimations(animations);
+    this._runtime = this.calcTotalDuration();
+    this._timeline = this.constructTimeline();
+
+    console.log(this);
+  }
+
+  _createClass(Timeline, [{
+    key: 'processAnimations',
+    value: function processAnimations(animations) {
+      for (var i = 0; i < animations.length; i++) {
+        var animation = animations[i];
+        var previousAnimation = animations[i - 1];
+
+        animation.hasRan = false;
+
+        if (typeof animation.delay === 'undefined') {
+          if (!previousAnimation) {
+            animation.delay = 0;
+          } else {
+            animation.delay = previousAnimation.animation._duration + previousAnimation.delay;
+          }
+        }
+
+        if (typeof animation.delay === 'string') {
+          var operator = animation.delay.slice(0, 1);
+          var time = animation.delay.slice(1, animation.delay.length);
+
+          switch (operator) {
+            case '~':
+              animation.delay = previousAnimation.delay;
+              break;
+            case '+':
+              animation.delay = previousAnimation.animation._duration + previousAnimation.delay + parseInt(time);
+              break;
+            case '-':
+              animation.delay = previousAnimation.animation._duration + previousAnimation.delay - parseInt(time);
+              break;
+            default:
+              throw new Error('Operator not defined. Use +, - or ~');
+          }
+        }
+      }
+
+      return animations;
+    }
+  }, {
+    key: 'resetAnimationsState',
+    value: function resetAnimationsState() {
+      this._animations.map(function (x) {
+        x.hasRan = false;
+      });
+    }
+  }, {
+    key: 'calcTotalDuration',
+    value: function calcTotalDuration() {
+      var runTimes = this._animations.map(function (x) {
+        return x.animation._duration + x.delay;
+      });
+      return Math.max.apply(Math, _toConsumableArray(runTimes));
+    }
+  }, {
+    key: 'constructTimeline',
+    value: function constructTimeline() {
+      var _this = this;
+
+      var timeline = new Zoetrope({
+        duration: this._runtime,
+        onTick: function onTick(p) {
+          return _this.runAnimations(p);
+        },
+        onComplete: function onComplete() {
+          _this.runAnimations(1);
+          _this.resetAnimationsState();
+        },
+        easing: function easing(t) {
+          return t;
+        }
+      });
+
+      return timeline;
+    }
+  }, {
+    key: 'runAnimations',
+    value: function runAnimations(p) {
+      for (var i = 0; i < this._animations.length; i++) {
+        var animation = this._animations[i];
+
+        if (p >= animation.delay / this._runtime && !animation.hasRan) {
+          animation.animation.play();
+          animation.hasRan = true;
+        }
+      }
+    }
+  }, {
+    key: 'play',
+    value: function play() {
+      this._timeline.play();
+      return this;
+    }
+  }, {
+    key: 'pause',
+    value: function pause() {
+      this._timeline.pause();
+      return this;
+    }
+  }, {
+    key: 'resume',
+    value: function resume() {
+      this._timeline.resume();
+      return this;
+    }
+  }, {
+    key: 'reverse',
+    value: function reverse() {
+      this._timeline.reverse();
+    }
+  }, {
+    key: 'loop',
+    value: function loop() {
+      this._timeline.loop();
+    }
+  }]);
+
+  return Timeline;
+}();
+
 var Zoetrope = function () {
   /**
    * Zoetrope constructor.
@@ -150,7 +284,7 @@ var Zoetrope = function () {
   }, {
     key: 'loop',
     value: function loop(delay) {
-      var _this = this;
+      var _this2 = this;
 
       if (!delay) {
         delay = 0;
@@ -160,7 +294,7 @@ var Zoetrope = function () {
       this.play();
       this.on('complete', function () {
         setTimeout(function () {
-          i % 2 === 0 ? _this.reverse() : _this.play();
+          i % 2 === 0 ? _this2.reverse() : _this2.play();
           i++;
         }, delay);
       });
@@ -179,7 +313,7 @@ var Zoetrope = function () {
   }, {
     key: '_run',
     value: function _run(timestamp, reversed) {
-      var _this2 = this;
+      var _this3 = this;
 
       /**
        * If its paused then just skip onto the next frame.
@@ -190,7 +324,7 @@ var Zoetrope = function () {
       if (!this._running) {
         window.requestAnimationFrame(function (timestamp) {
           // call requestAnimationFrame again with parameters
-          _this2._run(timestamp, reversed);
+          _this3._run(timestamp, reversed);
         });
         return;
       }
@@ -212,7 +346,7 @@ var Zoetrope = function () {
         // if duration not met yet
         this._rafID = window.requestAnimationFrame(function (timestamp) {
           // call requestAnimationFrame again with parameters
-          _this2._run(timestamp, reversed);
+          _this3._run(timestamp, reversed);
         });
       } else {
         this._startedAt = null;
@@ -324,7 +458,7 @@ var Zoetrope = function () {
   }, {
     key: '_polyfillRAF',
     value: function _polyfillRAF() {
-      var _this3 = this;
+      var _this4 = this;
 
       var vendors = ['webkit', 'moz'];
       for (var i = 0; i < vendors.length && !window.requestAnimationFrame; ++i) {
@@ -336,7 +470,7 @@ var Zoetrope = function () {
       !window.requestAnimationFrame || !window.cancelAnimationFrame) {
         var lastTime = 0;
         window.requestAnimationFrame = function (callback) {
-          var now = _this3._getNow();
+          var now = _this4._getNow();
           var nextTime = Math.max(lastTime + 16, now);
           return setTimeout(function () {
             return callback(lastTime = nextTime);
@@ -363,6 +497,9 @@ var easeOutQuart = function easeOutQuart(t) {
 
 if (typeof module !== 'undefined') {
   module.exports = Zoetrope;
+  module.exports.Zoetrope = Zoetrope;
+  module.exports.Timeline = Timeline;
 } else {
   window.Zoetrope = Zoetrope;
+  window.Timeline = Timeline;
 }
