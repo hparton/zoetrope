@@ -13,6 +13,7 @@ class Timeline {
     this._animations = this.processAnimations(animations)
     this._runtime = this.calcTotalDuration()
     this._timeline = this.constructTimeline()
+    this._forwards = true
 
     console.log(this)
   }
@@ -61,6 +62,10 @@ class Timeline {
     })
   }
 
+  swapPlayDirections () {
+    this._forwards = !this._forwards
+  }
+
   calcTotalDuration () {
     let runTimes = this._animations.map(x => { return x.animation._duration + x.delay })
     return Math.max(...runTimes)
@@ -84,9 +89,18 @@ class Timeline {
     for (let i = 0; i < this._animations.length; i++) {
       let animation = this._animations[i]
 
-      if ((p >= (animation.delay / this._runtime) && !animation.hasRan)) {
-        animation.animation.play()
-        animation.hasRan = true
+      if (this._forwards) {
+        if ((p >= (animation.delay / this._runtime) && !animation.hasRan)) {
+          animation.animation.play()
+          animation.hasRan = true
+        }
+      }
+
+      if (!this._forwards) {
+        if ((p <= (animation.delay / this._runtime) && !animation.hasRan)) {
+          animation.animation.reverse()
+          animation.hasRan = true
+        }
       }
     }
   }
@@ -107,11 +121,23 @@ class Timeline {
   }
 
   reverse () {
+    this.swapPlayDirections()
     this._timeline.reverse()
   }
 
-  loop () {
-    this._timeline.loop()
+  repeat() {
+    this.play()
+    this._timeline.on('complete', () => {
+      this.resetAnimationsState()
+      this.play()
+    })
+  }
+
+  loop (delay) {
+    if (!delay) delay = 0
+
+    this._timeline.on('complete', () => {this.swapPlayDirections()})
+    this._timeline.loop(delay)
   }
 }
 
@@ -172,7 +198,6 @@ class Zoetrope {
    */
   play (reversed) {
     if (this._startedAt === null) {
-      this.dispatch('start')
       this._run(this._setStartTime(), reversed)
     }
     return this
@@ -265,6 +290,10 @@ class Zoetrope {
     // Otherwise do the normal run function.
     var runtime = timestamp - this._startedAt
     var progress = runtime / this._duration
+
+    if (runtime === 0) {
+      this.dispatch('start')
+    }
 
     progress = Math.min(progress, 1)
 

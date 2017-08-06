@@ -23,6 +23,7 @@ var Timeline = function () {
     this._animations = this.processAnimations(animations);
     this._runtime = this.calcTotalDuration();
     this._timeline = this.constructTimeline();
+    this._forwards = true;
 
     console.log(this);
   }
@@ -74,6 +75,11 @@ var Timeline = function () {
       });
     }
   }, {
+    key: 'swapPlayDirections',
+    value: function swapPlayDirections() {
+      this._forwards = !this._forwards;
+    }
+  }, {
     key: 'calcTotalDuration',
     value: function calcTotalDuration() {
       var runTimes = this._animations.map(function (x) {
@@ -108,9 +114,18 @@ var Timeline = function () {
       for (var i = 0; i < this._animations.length; i++) {
         var animation = this._animations[i];
 
-        if (p >= animation.delay / this._runtime && !animation.hasRan) {
-          animation.animation.play();
-          animation.hasRan = true;
+        if (this._forwards) {
+          if (p >= animation.delay / this._runtime && !animation.hasRan) {
+            animation.animation.play();
+            animation.hasRan = true;
+          }
+        }
+
+        if (!this._forwards) {
+          if (p <= animation.delay / this._runtime && !animation.hasRan) {
+            animation.animation.reverse();
+            animation.hasRan = true;
+          }
         }
       }
     }
@@ -135,12 +150,31 @@ var Timeline = function () {
   }, {
     key: 'reverse',
     value: function reverse() {
+      this.swapPlayDirections();
       this._timeline.reverse();
     }
   }, {
+    key: 'repeat',
+    value: function repeat() {
+      var _this2 = this;
+
+      this.play();
+      this._timeline.on('complete', function () {
+        _this2.resetAnimationsState();
+        _this2.play();
+      });
+    }
+  }, {
     key: 'loop',
-    value: function loop() {
-      this._timeline.loop();
+    value: function loop(delay) {
+      var _this3 = this;
+
+      if (!delay) delay = 0;
+
+      this._timeline.on('complete', function () {
+        _this3.swapPlayDirections();
+      });
+      this._timeline.loop(delay);
     }
   }]);
 
@@ -216,7 +250,6 @@ var Zoetrope = function () {
     key: 'play',
     value: function play(reversed) {
       if (this._startedAt === null) {
-        this.dispatch('start');
         this._run(this._setStartTime(), reversed);
       }
       return this;
@@ -284,7 +317,7 @@ var Zoetrope = function () {
   }, {
     key: 'loop',
     value: function loop(delay) {
-      var _this2 = this;
+      var _this4 = this;
 
       if (!delay) {
         delay = 0;
@@ -294,7 +327,7 @@ var Zoetrope = function () {
       this.play();
       this.on('complete', function () {
         setTimeout(function () {
-          i % 2 === 0 ? _this2.reverse() : _this2.play();
+          i % 2 === 0 ? _this4.reverse() : _this4.play();
           i++;
         }, delay);
       });
@@ -313,7 +346,7 @@ var Zoetrope = function () {
   }, {
     key: '_run',
     value: function _run(timestamp, reversed) {
-      var _this3 = this;
+      var _this5 = this;
 
       /**
        * If its paused then just skip onto the next frame.
@@ -324,7 +357,7 @@ var Zoetrope = function () {
       if (!this._running) {
         window.requestAnimationFrame(function (timestamp) {
           // call requestAnimationFrame again with parameters
-          _this3._run(timestamp, reversed);
+          _this5._run(timestamp, reversed);
         });
         return;
       }
@@ -332,6 +365,10 @@ var Zoetrope = function () {
       // Otherwise do the normal run function.
       var runtime = timestamp - this._startedAt;
       var progress = runtime / this._duration;
+
+      if (runtime === 0) {
+        this.dispatch('start');
+      }
 
       progress = Math.min(progress, 1);
 
@@ -346,7 +383,7 @@ var Zoetrope = function () {
         // if duration not met yet
         this._rafID = window.requestAnimationFrame(function (timestamp) {
           // call requestAnimationFrame again with parameters
-          _this3._run(timestamp, reversed);
+          _this5._run(timestamp, reversed);
         });
       } else {
         this._startedAt = null;
@@ -458,7 +495,7 @@ var Zoetrope = function () {
   }, {
     key: '_polyfillRAF',
     value: function _polyfillRAF() {
-      var _this4 = this;
+      var _this6 = this;
 
       var vendors = ['webkit', 'moz'];
       for (var i = 0; i < vendors.length && !window.requestAnimationFrame; ++i) {
@@ -470,7 +507,7 @@ var Zoetrope = function () {
       !window.requestAnimationFrame || !window.cancelAnimationFrame) {
         var lastTime = 0;
         window.requestAnimationFrame = function (callback) {
-          var now = _this4._getNow();
+          var now = _this6._getNow();
           var nextTime = Math.max(lastTime + 16, now);
           return setTimeout(function () {
             return callback(lastTime = nextTime);
