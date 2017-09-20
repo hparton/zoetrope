@@ -125,7 +125,7 @@ class Timeline {
     this._timeline.reverse()
   }
 
-  repeat() {
+  repeat () {
     this.play()
     this._timeline.on('complete', () => {
       this.resetAnimationsState()
@@ -136,7 +136,7 @@ class Timeline {
   loop (delay) {
     if (!delay) delay = 0
 
-    this._timeline.on('complete', () => {this.swapPlayDirections()})
+    this._timeline.on('complete', () => { this.swapPlayDirections() })
     this._timeline.loop(delay)
   }
 }
